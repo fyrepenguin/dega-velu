@@ -1,30 +1,106 @@
-import React from "react";
-import styles from "../styles/Home.module.css";
-
-import { client } from "../store/client";
-import gql from "graphql-tag";
+import React from 'react';
+import { client } from '../store/client';
+import gql from 'graphql-tag';
+import Homepage from '../components/Homepage';
 
 export default function Home({ data }) {
-  console.log({ data });
-  return <div className={styles.container}>Dega velu</div>;
+  return <Homepage data={data} />;
 }
 
 export async function getServerSideProps(context) {
-  const res = await client.query({
+  const { data } = await client.query({
     query: gql`
-      {
-        posts {
+      query Homepage {
+        menu {
           nodes {
-            space_id
-            title
+            menu
             id
+            slug
+            name
           }
+        }
+        space {
+          description
+          name
+          site_title
+          tag_line
+          site_address
+          fav_icon {
+            url
+            dimensions
+          }
+          logo {
+            url
+            dimensions
+          }
+        }
+        categories(limit: 100, page: 1) {
+          nodes {
+            id
+            slug
+            name
+            description
+            meta_fields
+            medium {
+              url
+              dimensions
+            }
+          }
+        }
+        posts: posts(formats: [7]) {
           total
+          nodes {
+            users {
+              id
+              first_name
+              last_name
+            }
+            categories {
+              slug
+              name
+            }
+            medium {
+              alt_text
+              url
+              dimensions
+            }
+            published_date
+            id
+            status
+            subtitle
+            title
+            slug
+            excerpt
+          }
+        }
+        factchecks: posts(formats: [8]) {
+          total
+          nodes {
+            users {
+              id
+              first_name
+              last_name
+            }
+            categories {
+              slug
+              name
+            }
+            medium {
+              alt_text
+              url
+              dimensions
+            }
+            published_date
+            id
+            status
+            subtitle
+            title
+            slug
+          }
         }
       }
     `,
   });
-  const data = res;
 
   if (!data) {
     return {
@@ -34,41 +110,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      data: data.data.posts.nodes,
+      data,
     },
   };
 }
-
-// export async function getStaticProps() {
-//   console.log("Static Props");
-//   await client
-//     .query({
-//       query: gql`
-//         {
-//           posts {
-//             nodes {
-//               space_id
-//               title
-//               id
-//             }
-//             total
-//           }
-//         }
-//       `,
-//     })
-//     .then((res) => {
-//       console.log({ res: res.data.posts.nodes });
-//     })
-//     .catch(({ graphQLErrors, networkError }) => {
-//       console.log({ graphQLErrors, networkError: networkError.result.errors });
-//     })
-//     .finally(() => {
-//       console.log({ finally: "dsdnasmnda,smn" });
-//     });
-
-//   return {
-//     props: {
-//       launches: null,
-//     },
-//   };
-// }
