@@ -1,13 +1,13 @@
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 
-import { client } from "../../store/client";
-import gql from "graphql-tag";
+import { client } from '../../store/client';
+import gql from 'graphql-tag';
 
 export default function Home({ posts }) {
   return posts.map((post) => (
-    <div key={post.slug} style={{ marginLeft: "50%" }}>
-      <Link href={"/post/" + post.slug}>
+    <div key={post.slug} style={{ marginLeft: '50%' }}>
+      <Link href={'/post/' + post.slug}>
         <h1>{post.title}</h1>
       </Link>
       <div>
