@@ -4,6 +4,7 @@ import React from 'react'; // eslint-disable-line no-unused-vars
 import { jsx } from 'theme-ui';
 import StoryCard from './StoryCard';
 import Link from 'next/link';
+import ActiveLink from './ActiveLink';
 
 const FormatPageLayout = ({ type, posts, formats, item, header, useSlug = true }) => {
   const slug = useSlug ? item.slug : item.id;
@@ -85,15 +86,15 @@ const FormatPageLayout = ({ type, posts, formats, item, header, useSlug = true }
                 }}
               >
                 <li>
-                  <Link passHref href={`/${type}/${slug}`} activeClassName="active">
+                  <ActiveLink passHref href={`/${type}/${slug}`} activeClassName="active">
                   <a>All</a>
-                  </Link>
+                  </ActiveLink>
                 </li>
                 {formats.map((tab, index) => (
                   <li key={index}>
-                    <Link passHref href={`/${type}/${slug}/format/${tab.slug}`} activeClassName="active">
+                    <ActiveLink passHref href={`/${type}/${slug}/format/${tab.slug}`} activeClassName="active">
                     <a>{tab.name}</a>
-                    </Link>
+                    </ActiveLink>
                   </li>
                 ))}
               </ul>
