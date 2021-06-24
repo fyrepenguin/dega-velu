@@ -46,7 +46,7 @@ export default function NavBar({ logo, menu }) {
       <div
         sx={{
           position: 'fixed',
-          zIndex: '9999',
+          zIndex: '9998',
           top: 0,
           left: 0,
           right: 0,
