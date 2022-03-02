@@ -3,7 +3,7 @@ import { ThemeProvider } from 'theme-ui';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import theme from 'src/utils/theme.js';
-import Layout from 'components/layout';
+import Layout from 'components/Layout';
 import 'styles/globals.css';
 
 NProgress.configure({ showSpinner: false });
