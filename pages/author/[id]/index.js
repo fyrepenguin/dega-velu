@@ -11,9 +11,10 @@ import {
   FaTwitterSquare,
 } from 'react-icons/fa';
 
-import FormatPageLayout from '../../components/FormatPageLayout';
+import FormatPageLayout from 'components/FormatPageLayout';
 import gql from 'graphql-tag';
-import { client } from '../../store/client';
+import { client } from 'store/client';
+import Head from 'next/head';
 
 function UserDetailsAll({ data }) {
   const { dega } = data;
@@ -33,10 +34,12 @@ function UserDetailsAll({ data }) {
         return <FaLink size="1.75rem" />;
     }
   };
+
+  const name = data.user.display_name
+    ? `${data.user.display_name}`
+    : `${data.user.first_name} ${data.user.last_name}`;
+
   const header = (item) => {
-    const name = item.display_name
-      ? `${item.display_name}`
-      : `${item.first_name} ${item.last_name}`;
     return (
       <div sx={{ mb: (theme) => `${theme.space.spacing5}` }}>
         {item.medium && (
@@ -90,21 +93,25 @@ function UserDetailsAll({ data }) {
     );
   };
   return (
-    <FormatPageLayout
-      type="author"
-      posts={data.posts.nodes}
-      formats={data.formats.nodes}
-      item={data.user}
-      header={header}
-      useSlug={false}
-    />
+    <>
+      <Head>
+        <title>{name}</title>
+      </Head>
+      <FormatPageLayout
+        type="author"
+        posts={data.posts.nodes}
+        formats={data.formats.nodes}
+        item={data.user}
+        header={header}
+        useSlug={false}
+      />
+    </>
   );
 }
 
 export default UserDetailsAll;
 
 export async function getServerSideProps({ params }) {
-  console.log({ params });
   const { data } = await client.query({
     query: gql`
       query ($id: Int!) {
@@ -128,7 +135,7 @@ export async function getServerSideProps({ params }) {
             name
           }
         }
-        posts(users: [$id]) {
+        posts(users: { ids: [$id] }) {
           nodes {
             users {
               id

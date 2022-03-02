@@ -19,7 +19,7 @@ function Homepage({ data }) {
         }}
       >
         {/* Left sidebar */}
-        <div
+        {/* <div
           className="sidebar"
           sx={{
             display: [null, null, null, null, 'flex'],
@@ -41,7 +41,7 @@ function Homepage({ data }) {
               <CategoriesGroup categories={data.categories.nodes} />
             </div>
           </div>
-        </div>
+        </div> */}
         {/* Main/ Middle part of the homepage */}
         <div
           className="main-content"

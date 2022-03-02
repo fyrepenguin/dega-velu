@@ -4,7 +4,7 @@ import React from 'react'; // eslint-disable-line no-unused-vars
 
 import { jsx } from 'theme-ui';
 import { FaRegClock } from 'react-icons/fa';
-import parseDate from '../../src/utils/parseDate';
+import parseDate from 'src/utils/parseDate';
 import Link from 'next/link';
 
 /* 

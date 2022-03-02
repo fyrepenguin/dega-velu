@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from 'react'; // eslint-disable-line no-unused-vars
 import { jsx } from 'theme-ui';
 import gql from 'graphql-tag';
-import parseEditorJsData from '../../../src/utils/parseEditorJsData';
-import FormatPageLayout from '../../../components/FormatPageLayout';
+import parseEditorJsData from 'src/utils/parseEditorJsData';
+import FormatPageLayout from 'components/FormatPageLayout';
 
-import { client } from '../../../store/client';
+import { client } from 'store/client';
+import Head from 'next/head';
 
 function TagDetailsAll({ data }) {
   //  const { dega } = data;
@@ -29,26 +30,30 @@ function TagDetailsAll({ data }) {
             textTransform: 'capitalize',
           }}
         >
-          {item.name} 
+          {item.name}
         </h1>
       </div>
     );
   };
   return (
-    <FormatPageLayout
-      type="tag"
-      posts={data.posts.nodes}
-      formats={data.formats.nodes}
-      item={data.tag}
-      header={header}
-    />
+    <>
+      <Head>
+        <title> {data.tag.name} </title>
+      </Head>
+      <FormatPageLayout
+        type="tag"
+        posts={data.posts.nodes}
+        formats={data.formats.nodes}
+        item={data.tag}
+        header={header}
+      />
+    </>
   );
 }
 
 export default TagDetailsAll;
 
 export async function getServerSideProps({ params }) {
-  console.log({ params });
   const { data } = await client.query({
     query: gql`
       query ($slug: String!) {
@@ -65,7 +70,7 @@ export async function getServerSideProps({ params }) {
             name
           }
         }
-        posts {
+        posts(tags: { slugs: [$slug] }) {
           nodes {
             users {
               id

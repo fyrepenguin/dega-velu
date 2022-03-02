@@ -2,7 +2,7 @@
 /** @jsxRuntime classic */
 import React from 'react'; // eslint-disable-line no-unused-vars
 import { jsx } from 'theme-ui';
-import parseDate from '../src/utils/parseDate';
+import parseDate from 'src/utils/parseDate';
 import Link from 'next/link';
 const StoryLinks = ({ post, postActiveIndex, categories = true, index }) => {
   /**
