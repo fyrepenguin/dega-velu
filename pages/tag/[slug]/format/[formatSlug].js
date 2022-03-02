@@ -1,28 +1,25 @@
 /** @jsx jsx */
 /** @jsxRuntime classic */
-import React, { useState, useEffect } from 'react'; // eslint-disable-line no-unused-vars
-import { jsx } from 'theme-ui';
-import gql from 'graphql-tag';
-import parseEditorJsData from 'src/utils/parseEditorJsData';
-import FormatPageLayout from 'components/FormatPageLayout';
 
+import React from 'react'; // eslint-disable-line no-unused-vars
+import gql from 'graphql-tag';
+import { jsx } from 'theme-ui';
+import {
+  FaEnvelope,
+  FaFacebookSquare,
+  FaInstagramSquare,
+  FaLink,
+  FaLinkedin,
+  FaTwitterSquare,
+} from 'react-icons/fa';
 import { client } from 'store/client';
+import FormatPageLayout from 'components/FormatPageLayout';
 import Head from 'next/head';
 
-function CategoryDetailsAll({ data }) {
+function TagDetailsAll({ data }) {
   //  const { dega } = data;
   // const formatType = 'fact-check';
   // const filterPosts = dega.posts.nodes.filter((i) => i.format.slug !== formatType);
-
-  const [readMore, setReadMore] = React.useState(true);
-  const [isReadMoreNeeded, setIsReadMoreNeeded] = useState(false);
-
-  useEffect(() => {
-    if (process.browser) {
-      const el = document.getElementById('category-description');
-      setIsReadMoreNeeded(el?.clientHeight < el?.scrollHeight);
-    }
-  }, []);
 
   const header = (item) => {
     return (
@@ -40,57 +37,34 @@ function CategoryDetailsAll({ data }) {
             textTransform: 'capitalize',
           }}
         >
-          {item.name} 
+          {item.name}
         </h1>
-        <div
-          id="category-description"
-          sx={{
-            maxHeight: (theme) => (readMore ? `calc(${theme.lineHeights.normal}em * 6 )` : '100%'),
-            overflow: 'hidden',
-            px: (theme) => `${theme.space.spacing5}`,
-          }}
-        >
-          {parseEditorJsData({ content: item.description })}
-        </div>
-        {item.description && isReadMoreNeeded && (
-          <button
-            type="button"
-            onClick={() => setReadMore((prev) => !prev)}
-            sx={{
-              px: (theme) => `${theme.space.spacing5}`,
-              color: (theme) => `${theme.colors.textLinkPrimary}`,
-              fontSize: (theme) => `${theme.fontSizes.h6}`,
-            }}
-          >
-            {readMore ? 'Read more' : 'Read less'}
-          </button>
-        )}
       </div>
     );
   };
   return (
     <>
       <Head>
-        <title> {data.category.name} </title>
+        <title> {data.tag.name} </title>
       </Head>
       <FormatPageLayout
-        type="category"
+        type="tag"
         posts={data.posts.nodes}
         formats={data.formats.nodes}
-        item={data.category}
+        item={data.tag}
         header={header}
       />
     </>
   );
 }
 
-export default CategoryDetailsAll;
+export default TagDetailsAll;
 
 export async function getServerSideProps({ params }) {
   const { data } = await client.query({
     query: gql`
-      query ($slug: String!) {
-        category(slug: $slug) {
+      query ($slug: String!, $formatSlug: String!) {
+        tag(slug: $slug) {
           description
           id
           medium {
@@ -108,7 +82,7 @@ export async function getServerSideProps({ params }) {
             name
           }
         }
-        posts(categories: { slugs: [$slug] }) {
+        posts(tags: { slugs: [$slug] }, formats: { slugs: [$formatSlug] }) {
           nodes {
             users {
               id
@@ -141,10 +115,11 @@ export async function getServerSideProps({ params }) {
     `,
     variables: {
       slug: params.slug,
+      formatSlug: params.formatSlug,
     },
   });
 
-  if (!data || !data.category) {
+  if (!data || !data.tag) {
     return {
       notFound: true,
     };

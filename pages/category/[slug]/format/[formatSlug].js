@@ -1,13 +1,14 @@
 /** @jsx jsx */
 /** @jsxRuntime classic */
+
 import React, { useState, useEffect } from 'react'; // eslint-disable-line no-unused-vars
 import { jsx } from 'theme-ui';
 import gql from 'graphql-tag';
-import parseEditorJsData from 'src/utils/parseEditorJsData';
-import FormatPageLayout from 'components/FormatPageLayout';
 
-import { client } from 'store/client';
 import Head from 'next/head';
+import FormatPageLayout from 'components/FormatPageLayout';
+import parseEditorJsData from 'src/utils/parseEditorJsData';
+import { client } from 'store/client';
 
 function CategoryDetailsAll({ data }) {
   //  const { dega } = data;
@@ -89,7 +90,7 @@ export default CategoryDetailsAll;
 export async function getServerSideProps({ params }) {
   const { data } = await client.query({
     query: gql`
-      query ($slug: String!) {
+      query ($slug: String!, $formatSlug: String!) {
         category(slug: $slug) {
           description
           id
@@ -108,7 +109,7 @@ export async function getServerSideProps({ params }) {
             name
           }
         }
-        posts(categories: { slugs: [$slug] }) {
+        posts(categories: { slugs: [$slug] }, formats: { slugs: [$formatSlug] }) {
           nodes {
             users {
               id
@@ -141,6 +142,7 @@ export async function getServerSideProps({ params }) {
     `,
     variables: {
       slug: params.slug,
+      formatSlug: params.formatSlug,
     },
   });
 

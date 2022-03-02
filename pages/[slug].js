@@ -6,8 +6,9 @@ import Link from 'next/link';
 import gql from 'graphql-tag';
 import { jsx } from 'theme-ui';
 import { FaTwitterSquare, FaFacebookSquare, FaWhatsappSquare } from 'react-icons/fa';
-import Post from '../components/Post';
-import { client } from '../store/client';
+import Post from 'components/Post';
+import { client } from 'store/client';
+import Head from 'next/head';
 
 export default function PostDetails({ post }) {
   // const filteredPosts = dega.posts.nodes.filter((post) => post.published_date !== null);
@@ -80,6 +81,9 @@ export default function PostDetails({ post }) {
   }
   return (
     <>
+      <Head>
+        <title> {post.title} </title>
+      </Head>
       <div
         sx={{
           display: 'flex',
@@ -204,7 +208,6 @@ export default function PostDetails({ post }) {
 }
 
 export async function getServerSideProps({ params }) {
-  console.log({ params });
   const { data } = await client.query({
     query: gql`
       query PostQuery($slug: String) {
@@ -295,7 +298,7 @@ export async function getServerSideProps({ params }) {
     },
   });
 
-  if (!data) {
+  if (!data || !data.post) {
     return {
       notFound: true,
     };

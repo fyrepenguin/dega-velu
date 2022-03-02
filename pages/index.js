@@ -1,10 +1,18 @@
 import React from 'react';
-import { client } from '../store/client';
+import { client } from 'store/client';
 import gql from 'graphql-tag';
-import Homepage from '../components/Homepage';
+import Homepage from 'components/Homepage';
+import Head from 'next/head';
 
 export default function Home({ data }) {
-  return <Homepage data={data} />;
+  return (
+    <>
+      <Head>
+        <title>{data.space.site_title} </title>
+      </Head>
+      <Homepage data={data} />
+    </>
+  );
 }
 
 export async function getServerSideProps(context) {
@@ -47,7 +55,7 @@ export async function getServerSideProps(context) {
             }
           }
         }
-        posts: posts(formats: [7]) {
+        posts: posts(formats: { slugs: ["article"] }) {
           total
           nodes {
             users {
@@ -73,7 +81,7 @@ export async function getServerSideProps(context) {
             excerpt
           }
         }
-        factchecks: posts(formats: [8]) {
+        factchecks: posts(formats: { slugs: ["fact-check"] }) {
           total
           nodes {
             users {
