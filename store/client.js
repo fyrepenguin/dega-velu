@@ -2,11 +2,10 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 import "isomorphic-unfetch";
 
 export const client = new ApolloClient({
-  uri: "http://localhost:9001/query",
+  uri: process.env.API_URL,
   headers: {
-    Authorization:
-      "Basic YjU2M2VmZDIyOTc0NzRhNjYyMjRhYzZmMzNhMDZkYzI4ODc5NzFlNTg5NGQ5MTk3YjA3ZjVjNzg1OThlYjE1MTokMmEkMTAkMmpZSmVNQWNxYTRYaU5hM25qb2xsdVpJcElGREhCTkV3QjB5OVRJdVVobVZNUVZNWVd2Y0c=",
-    "X-Space": 1,
+    'X-Dega-API-Key': `${process.env.ACCESS_TOKEN}`,
+    "X-Space": parseInt(process.env.SPACE_ID),
   },
   cache: new InMemoryCache(),
 });
