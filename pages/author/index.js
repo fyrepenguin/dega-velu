@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 
 export default function Home({ authors }) {
   return authors.map((author) => (
-    <div key={author.slug} style={{ marginLeft: "50%" }}>
+    <div key={author.slug} style={{}}>
       <h1>{author.first_name}</h1>
 
       <div>

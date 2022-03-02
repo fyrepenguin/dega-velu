@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 
 export default function Home({ categories }) {
   return categories.map((category) => (
-    <div key={category.slug} style={{ marginLeft: "50%" }}>
+    <div key={category.slug} style={{}}>
       <h1>{category.name}</h1>
 
       <div>
