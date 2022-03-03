@@ -16,7 +16,7 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps(context) {
-  console.log(process.env.DEGA_API_KEY)
+  console.log({ one: process.env.DEGA_API_KEY, two: process.env.DEGA_API_KEY_TWO, three: process.env.DEGA_API_KEY_THREE, four: process.env.DEGA_API_KEY_FOUR, sId: process.env.SPACE_ID, AU: process.env.API_URL })
   const { data } = await client.query({
     query: gql`
       query Homepage {
