@@ -208,6 +208,7 @@ export default function PostDetails({ post }) {
 }
 
 export async function getServerSideProps({ params }) {
+  console.log(process.env.DEGA_API_KEY, process.env.SPACE_ID, process.env.API_URL)
   const { data } = await client.query({
     query: gql`
       query PostQuery($slug: String) {
