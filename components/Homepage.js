@@ -14,7 +14,8 @@ function Homepage({ data }) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
+          gap: '1rem',
           borderBottomWidth: [null, null, null, 'px'],
         }}
       >
@@ -45,16 +46,22 @@ function Homepage({ data }) {
         {/* Main/ Middle part of the homepage */}
         <div
           className="main-content"
-          sx={{ width: ['full', null, '3/4', null, '2/4'], mx: 'auto' }}
+          sx={{ width: ['full', null, '3/4', null, '2/4'], }}
         >
           {/* Featured Card */}
           {data.posts.nodes.length > 0 ? (
-            <StoryCard
+            <div className='featured' sx={{
+              transition: 'all 0.5s',
+              '&:hover': { textDecoration: 'none', transform: 'scale(1.04)', },
+            }}>
+              <StoryCard
               cardStyle="featured"
               storyData={data.posts.nodes[0]}
               // imageSize="w-full h-64"
               imageSize={{ width: 'full', height: 64 }}
             />
+            </div>
+
           ) : null}
 
           {/* Articles list */}
@@ -98,7 +105,7 @@ function Homepage({ data }) {
                 borderBottomWidth: 'px',
               }}
             >
-              <h5 className="heading">Recent In Factchecks</h5>
+              <h5 sx={{ fontSize: '1.25rem' }}>Recent In Factchecks</h5>
             </div>
             {data?.factchecks.nodes.map((item, index) => (
               <StoryCard

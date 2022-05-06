@@ -4,7 +4,7 @@ import Router from 'next/router';
 import NProgress from 'nprogress';
 import theme from 'src/utils/theme.js';
 import Layout from 'components/Layout';
-import 'styles/globals.css';
+import 'styles/global.css';
 
 NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => {

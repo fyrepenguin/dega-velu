@@ -9,10 +9,11 @@ import { FaTwitterSquare, FaFacebookSquare, FaWhatsappSquare } from 'react-icons
 import Post from 'components/Post';
 import { client } from 'store/client';
 import Head from 'next/head';
+import parseDate from 'src/utils/parseDate';
 
-export default function PostDetails({ post }) {
+export default function PostDetails({ post, posts }) {
   // const filteredPosts = dega.posts.nodes.filter((post) => post.published_date !== null);
-  //const posts = filteredPosts.filter((post) => post.id !== dega.post.id);
+  const filteredPosts = posts.nodes.filter((p) => p.id !== post.id).slice(0, 6);
   //posts.unshift(dega.post);
 
   //const [postItems, setPostItems] = React.useState(posts.slice(0, 1));
@@ -22,7 +23,7 @@ export default function PostDetails({ post }) {
   // const [relatedPosts, setRelatedPosts] = React.useState(posts.slice(0, 10));
   // const [hasNextPageRelatedPost, setHasNextPageRelatedPost] = React.useState(true);
   const [observer, setObserver] = React.useState({
-    observe: () => {},
+    observe: () => { },
   });
   // const handleLoadMore = () => {
   //   if (!hasNextPage) return false;
@@ -83,6 +84,18 @@ export default function PostDetails({ post }) {
     <>
       <Head>
         <title> {post.title} </title>
+        <meta name="description" content={post.excerpt} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:image" content={post.medium.url.proxy} />
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="article" />
+        {post.schemas &&
+          post.schemas.map((schema, i) => (
+            <script key={i} type="application/ld+json">
+              {JSON.stringify(schema)}
+            </script>
+          ))}
       </Head>
       <div
         sx={{
@@ -201,6 +214,34 @@ export default function PostDetails({ post }) {
               </div>
             </>
           )}
+          <div>
+            <h4>Recent Posts</h4>
+            <div sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              {filteredPosts.map(p => (
+                <div
+                  key={p.id}
+                  sx={{
+                    flex: [null, null, '0 0 50%'],
+                    maxWidth: [null, null, '50%'],
+                    p: '1.5rem',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Link href={`/${p.slug}`} >
+                    <a sx={{ display: 'flex', cursor: 'pointer' }}>
+                      <div sx={{ flex: '0 0 33%' }}>
+                        <img src={p.medium.url.proxy} alt="" />
+                      </div>
+                      <div sx={{ flex: '0 0 67%', pl: '1rem' }}>
+                        <h5>{p.title}</h5>
+                        <p sx={{ fontSize: '0.75rem' }}>{parseDate(p.published_date)}</p>
+                      </div>
+                    </a>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -291,6 +332,45 @@ export async function getServerSideProps({ params }) {
             }
           }
         }
+        posts {
+          nodes {
+            published_date
+            description
+            excerpt
+            id
+            slug
+            status
+            subtitle
+            title
+            updated_at
+            users {
+              email
+              first_name
+              last_name
+              display_name
+              slug
+              id
+            }
+            tags {
+              id
+              name
+              slug
+              description
+            }
+            medium {
+              alt_text
+              id
+              url
+              dimensions
+            }
+            format {
+              name
+              slug
+              id
+              description
+            }
+          }
+        }
       }
     `,
     variables: {
@@ -307,6 +387,7 @@ export async function getServerSideProps({ params }) {
   return {
     props: {
       post: data.post,
+      posts: data.posts
     },
   };
 }

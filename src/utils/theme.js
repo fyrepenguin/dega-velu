@@ -81,7 +81,7 @@ export default {
       '#1E3A8A',
     ],
     gray: [
-      null,
+      '#f7f7fc',
       '#f7fafc',
       '#edf2f7',
       '#e2e8f0',
@@ -115,7 +115,7 @@ export default {
   },
   fonts: {
     heading: 'inherit',
-    metropolis: 'Metropolis, Georgia, Cambria, "Times New Roman", Times, serif',
+    metropolis: 'Inter, Metropolis, Georgia, Cambria, "Times New Roman", Times, serif',
     sans: 'system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
     serif: 'Georgia,Cambria,"Times New Roman",Times,serif',
     mono: 'Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace',

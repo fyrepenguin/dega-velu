@@ -376,7 +376,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: Metropolis, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-family: Inter, Metropolis, Georgia, Cambria, 'Times New Roman', Times, serif;
   font-weight: bold;
 }
 
@@ -425,7 +425,7 @@ div {
   scroll-behavior: smooth;
 }
 .heading {
-  font-family: Metropolis, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-family: Inter, Metropolis, Georgia, Cambria, 'Times New Roman', Times, serif;
   text-transform: uppercase;
   font-weight: bold;
   margin: 1rem 0;
